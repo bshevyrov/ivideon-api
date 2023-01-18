@@ -12,14 +12,43 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <telegram-api.version>6.4.0</telegram-api.version>
+        <log4j.version>2.19.0</log4j.version>
+
     </properties>
     <dependencies>
+<!--        Telegram api-->
     <!-- https://mvnrepository.com/artifact/org.telegram/telegrambots -->
     <dependency>
         <groupId>org.telegram</groupId>
         <artifactId>telegrambots</artifactId>
         <version>${telegram-api.version}</version>
     </dependency>
+        <!--        Telegram api-->
+
+        <!--        LOGGING-->
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j2-impl -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j2-impl</artifactId>
+            <version>${log4j.version}</version>
+            <!--            <scope>test</scope>-->
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+
+        <!--        LOGGING-->
+
     </dependencies>
 
 </project>
