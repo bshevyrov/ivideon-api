@@ -1,4 +1,4 @@
-package ua.com.company.entity.ivideon;
+package ua.com.company.entity.ivideon.entity;
 
 public class IvideonAccount {
     private final String token_type;
