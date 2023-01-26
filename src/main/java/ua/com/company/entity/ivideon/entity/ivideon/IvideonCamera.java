@@ -1,4 +1,4 @@
-package ua.com.company.entity.ivideon.entity;
+package ua.com.company.entity.ivideon.entity.ivideon;
 
 public class IvideonCamera {
 

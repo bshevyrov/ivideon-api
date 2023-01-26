@@ -1,6 +1,6 @@
 package ua.com.company.utils;
 
-public class Camera {
+public class CameraRequest {
     private int id;
     private int server;
     private int name;
@@ -33,11 +33,11 @@ public class Camera {
     private int _misc;
     private int _others;
 
-    private Camera() {
+    private CameraRequest() {
     }
 
     public static Builder newBuilder() {
-        return new Camera().new Builder();
+        return new CameraRequest().new Builder();
     }
 
     public class Builder {
@@ -45,34 +45,34 @@ public class Camera {
         private Builder() {
         }
 
-        public Camera.Builder setUser(int id) {
-            Camera.this.id = id;
+        public CameraRequest.Builder setUser(int id) {
+            CameraRequest.this.id = id;
             return this;
         }
 
-        public Camera.Builder setName(int name) {
-            Camera.this.name = name;
+        public CameraRequest.Builder setName(int name) {
+            CameraRequest.this.name = name;
             return this;
         }
 
 
-        public Camera.Builder setCameraOnline(int id) {
-            Camera.this.online = id;
+        public CameraRequest.Builder setCameraOnline(int id) {
+            CameraRequest.this.online = id;
             return this;
         }
 
-        public Camera.Builder setCameraConnected(int id) {
-            Camera.this.connected = id;
+        public CameraRequest.Builder setCameraConnected(int id) {
+            CameraRequest.this.connected = id;
             return this;
         }
 
-        public Camera.Builder setCameraMode(int id) {
-            Camera.this.mode = id;
+        public CameraRequest.Builder setCameraMode(int id) {
+            CameraRequest.this.mode = id;
             return this;
         }
 
-        public Camera build() {
-            return Camera.this;
+        public CameraRequest build() {
+            return CameraRequest.this;
         }
 
 

@@ -1,14 +1,20 @@
 package ua.com.company.entity;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ua.com.company.entity.ivideon.entity.response.Camera;
 import ua.com.company.utils.IvideonConnection;
 import ua.com.company.utils.property.IvideonPropertiesReader;
 import ua.com.company.utils.property.TelegramPropertiesReader;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class MyTelegramBot extends TelegramLongPollingBot {
     private final TelegramPropertiesReader telegramPropertiesReader;
@@ -35,25 +41,21 @@ public class MyTelegramBot extends TelegramLongPollingBot {
             if (update.getMessage().getText().equals("/login")) {
                 IvideonConnection ivideonConnection = new IvideonConnection(
                         new IvideonPropertiesReader("src/main/resources/ivideon.properties"));
-
                 try {
-                    String response = ivideonConnection.connectToApi();
-                    String[] responses = new String[20];
-                    if (response.length() >= 4096) {
-                        for (int i = 0; i < response.length() % 4096; i++) {
-                            responses[i] = response.substring(0, 4096);
-                            break;
-                        }
-                    }
+                    List<Camera> response = ivideonConnection.makeMethodRequest().stream()
+                            .parallel()
+                            .filter(camera ->
+                                    camera.getMode().equalsIgnoreCase("on"))
+                            .filter(camera -> !camera.isOnline())
 
-                    message.setText(responses[0]);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
+                            .collect(Collectors.toList());
+
+                    message.setText(response.toString());
+
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
             try {
                 execute(message); // Call method to send the message
             } catch (TelegramApiException e) {

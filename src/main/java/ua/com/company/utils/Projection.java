@@ -19,7 +19,7 @@ public class Projection {
     private int features;
     private int is_bridge;
     private int has_alert_inputs;
-    private Camera cameras ;
+    private CameraRequest cameras ;
     private int _misc;
     private int _others;
 
@@ -32,7 +32,7 @@ public class Projection {
         private Builder() {
         }
 
-    public Builder setCamera(Camera camera){
+    public Builder setCamera(CameraRequest camera){
             Projection.this.cameras = camera;
             return this;
     }

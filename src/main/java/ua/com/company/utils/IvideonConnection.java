@@ -2,22 +2,19 @@ package ua.com.company.utils;
 
 import com.google.gson.Gson;
 import org.apache.commons.lang3.StringEscapeUtils;
-import ua.com.company.entity.ivideon.builder.AuthIvideonRequestMethod;
+import ua.com.company.entity.ivideon.builder.AuthIvideonRequest;
 import ua.com.company.entity.ivideon.builder.Director;
-import ua.com.company.entity.ivideon.entity.IvideonAccount;
+import ua.com.company.entity.ivideon.builder.MethodIvideonRequest;
+import ua.com.company.entity.ivideon.entity.ivideon.IvideonAccount;
+import ua.com.company.entity.ivideon.entity.response.Camera;
+import ua.com.company.entity.ivideon.entity.response.Root;
 import ua.com.company.utils.property.IvideonPropertiesReader;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 
 public class IvideonConnection {
     private final IvideonPropertiesReader ivideonPropertiesReader;
@@ -45,7 +42,7 @@ public class IvideonConnection {
 //        return data;
 //    }
 
-    public String connectToApi() throws IOException, InterruptedException {
+    public HttpResponse<String> makeAuthRequest() {
 //        HttpRequest request = HttpRequest.newBuilder()
 //                .POST(ofFormData(createBody()))
 //                .uri(URI.create(IVIDEON_API_URL + "/auth/oauth/token"))
@@ -55,11 +52,20 @@ public class IvideonConnection {
 
 
         Director director = new Director();
-        AuthIvideonRequestMethod authIvideonRequestMethod = new AuthIvideonRequestMethod();
-        director.createAuthRequest(authIvideonRequestMethod, ivideonPropertiesReader);
-        HttpRequest request = authIvideonRequestMethod.getResult();
-        HttpResponse<String> response = authIvideonRequestMethod.getHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        return response.body();
+        AuthIvideonRequest authIvideonRequest = new AuthIvideonRequest();
+        director.createAuthRequest(authIvideonRequest, ivideonPropertiesReader);
+        HttpRequest request = authIvideonRequest.getResult();
+        HttpResponse<String> response = null;
+        try {
+            response = authIvideonRequest.getHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+//        return response.body();
+        return response;
+
 //        Gson gson = new Gson();
 //        ivideonAccount = gson.fromJson(response.body(), IvideonAccount.class);
 //        //todo builder
@@ -81,6 +87,33 @@ public class IvideonConnection {
 //                gson.toJson(
 //                        ivideonRequest)
 //                , "FIND"));
+
+    }
+
+    public List<Camera> makeMethodRequest() {
+        Director director = new Director();
+        MethodIvideonRequest methodIvideonRequest = new MethodIvideonRequest();
+        director.createMethodRequest(methodIvideonRequest, ivideonPropertiesReader);
+        HttpRequest request = methodIvideonRequest.getResult();
+        HttpResponse<String> response = null;
+        try {
+            response = methodIvideonRequest.getHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Gson gson = new Gson();
+        Root root = gson.fromJson(StringEscapeUtils.unescapeJava(response.body()), Root.class);
+
+        List<Camera> cameras = new LinkedList<>();
+        root.getResult().getItems().stream()
+                .parallel()
+                .forEach(item ->
+                        cameras.addAll(
+                                item.getCameras()));
+
+        return cameras;
 
     }
 
