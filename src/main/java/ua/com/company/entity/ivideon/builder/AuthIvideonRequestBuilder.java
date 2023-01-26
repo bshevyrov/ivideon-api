@@ -1,19 +1,16 @@
 package ua.com.company.entity.ivideon.builder;
 
-import org.checkerframework.checker.units.qual.K;
-
 import java.net.URI;
 import java.net.http.HttpRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 
-public class MethodIvideonRequest implements IvideonRequestBuilder {
+public class AuthIvideonRequestBuilder implements IvideonRequestBuilder {
+
+
     private HttpRequest.BodyPublisher body;
     private URI uri;
-    //    private Map<String, String> headers;
     private String[] stringRepresentationOfHeaders;
 
     @Override
@@ -27,15 +24,14 @@ public class MethodIvideonRequest implements IvideonRequestBuilder {
 
     }
 
-
     @Override
     public void setHeader(Map<String, String> headers) {
-        String[] headerStr = new String[headers.size()*2];
-        List<Map.Entry<String,String>> list = new ArrayList<>(headers.entrySet());
-        int x =0;
-        for (int i = 0; i < list.size(); i++) {
-            headerStr[x++]=list.get(i).getKey();
-            headerStr[x++]=list.get(i).getValue();
+        String[] headerStr = new String[headers.size() * 2];
+        List<Map.Entry<String, String>> list = new ArrayList<>(headers.entrySet());
+        int x = 0;
+        for (Map.Entry<String, String> stringStringEntry : list) {
+            headerStr[x++] = stringStringEntry.getKey();
+            headerStr[x++] = stringStringEntry.getValue();
         }
         this.stringRepresentationOfHeaders = headerStr;
     }

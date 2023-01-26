@@ -8,3 +8,5 @@ User must have privilege to write and delete folders & files.
  args - minutes of another request
 
 deploy - maven install
+
+jdk 11.0.12

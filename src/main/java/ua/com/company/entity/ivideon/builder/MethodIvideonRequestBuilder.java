@@ -5,11 +5,8 @@ import java.net.http.HttpRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
-public class AuthIvideonRequest implements IvideonRequestBuilder {
-
-
+public class MethodIvideonRequestBuilder implements IvideonRequestBuilder {
     private HttpRequest.BodyPublisher body;
     private URI uri;
     //    private Map<String, String> headers;
@@ -25,6 +22,7 @@ public class AuthIvideonRequest implements IvideonRequestBuilder {
         this.uri = uri;
 
     }
+
 
     @Override
     public void setHeader(Map<String, String> headers) {
